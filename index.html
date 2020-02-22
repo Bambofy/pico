@@ -1,12 +1,12 @@
 <html>
     <head>
-        <title>Textarea Sketch</title>
+        <title>pico sketch</title>
     </head>
 
     <body>
 
     <!-- Define your elements -->
-        <h1>Text Area Sketch</h1>
+        <h1>pico sketch</h1>
         
         <textarea id="displayTextArea"></textarea>
 
@@ -31,12 +31,23 @@
             * Javascript Pico Lib
             */
             let utf8Decoder = new TextDecoder("utf-8");
+            let utf8Encoder = new TextEncoder("utf-8");
+
+            // Get a string from the memory.
             function GetString(inStrPtr, inStrLength)
             {
                 let arr = memory.subarray(inStrPtr, inStrPtr + inStrLength);
 
                 return utf8Decoder.decode(arr);
             }
+            // Convert a javascript string into an uint8_t array.
+            function ConvertStringToBytes(inJSString)
+            {
+                return utf8Encoder.encode(inJSString);
+            }
+
+
+
 
 
 
@@ -59,6 +70,9 @@
 
 
 
+
+
+
             /*
             * Alert
             */
@@ -68,6 +82,10 @@
 
                 alert(strContents);
             }
+
+
+
+
 
 
 
@@ -83,21 +101,33 @@
                 // resize the element.
                 textAreaElement.cols = inWidth;
                 textAreaElement.rows = inHeight;
+            };
 
-                // clear text area with empty.
-                let contents = "\0";
-                
-                contents = contents.repeat(inWidth* inHeight);
+            imports['_TextArea_GetContent'] = function(inStrPtr, inStrLen, outContentsStrPtr, outContentsStrLength)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+                let textAreaElement = document.getElementById(elementId);
 
+                // Content is now an array of bytes.
+                let content = textAreaElement.value;
+                let contentArray = ConvertStringToBytes(content);
+
+                // 1. copy outContentsStrLength of data from the content array
+                let contentArraySpan = contentArray.subarray(0, outContentsStrLength); // subarray creates a REFERENCE.
+
+                // 2. paste contentArraySpan bytes to the destination at outContentsStrPtr.
+                memory.set(contentArraySpan, outContentsStrPtr);
+            };
+
+            imports['_TextArea_SetContent'] = function(inStrPtr, inStrLen, inContentsStrPtr, inContentsStrLen)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+                let contents = GetString(inContentsStrPtr, inContentsStrLen);
+
+                let textAreaElement = document.getElementById(elementId);
                 textAreaElement.value = contents;
             };
 
-            imports['_TextArea_SetCharacter'] = function(inStrPtr, inStrLen, inX, inY, inChar)
-            {
-                let elementId = GetString(inStrPtr, inStrLen);
-
-                let textAreaElement = document.getElementById(elementId);
-            };
 
 
 
@@ -127,6 +157,49 @@
 
                 exports['setup']();
             };
+
+
+            /*
+            * DOM Window events
+            */
+           // Keys
+            window.onkeypress = function(inEvent)
+            {
+                exports["onkeypress"](inEvent.key.charCodeAt(0));
+            };
+
+            window.onkeydown = function(inEvent)
+            {
+                exports["onkeydown"](inEvent.key.charCodeAt(0));
+            };
+
+            window.onkeyup = function(inEvent)
+            {
+                exports["onkeyup"](inEvent.key.charCodeAt(0));
+            };
+
+
+
+            // Mouse
+            window.onclick = function(inEvent)
+            {
+                exports["onclick"](inEvent.buttons);
+            };
+
+            window.onmousedown = function(inEvent)
+            {
+                exports["onmousedown"](inEvent.buttons);
+            }
+
+            window.onmouseup = function(inEvent)
+            {
+                exports["onmouseup"](inEvent.buttons);
+            }
+
+            window.onwheel = function(inEvent)
+            {
+                exports["onwheel"](inEvent.deltaX, inEvent.deltaY);
+            }
         </script>
     </body>
 </html>

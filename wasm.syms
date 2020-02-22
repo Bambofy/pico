@@ -4,4 +4,5 @@ _print_err
 _alert
 
 _TextArea_Init
-_TextArea_SetCharacter
+_TextArea_SetContent
+_TextArea_GetContent

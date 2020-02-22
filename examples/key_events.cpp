@@ -26,8 +26,3 @@ void onkeydown(const char inKeyChar)
 void onkeyup(const char inKeyChar)
 {
 }
-
-void onwheel(int32_t inDeltaX, uint32_t inDeltaY)
-{
-    alert(inDeltaX, )
-}

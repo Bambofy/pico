@@ -16,11 +16,13 @@
 
 extern "C"
 {
-    void _TextArea_Init(uintptr_t inElementName, uint32_t inNameLength, uint32_t inWidth, uint32_t inHeight);
-    void _TextArea_SetCharacter(uintptr_t inElementName, uint32_t inNameLength, uint32_t inX, uint32_t inY, const char inC); // this is bound to the js
+    void _TextArea_Init(uintptr_t inElementName, uint32_t inNameLength, uint32_t inColumns, uint32_t inRows);
+    void _TextArea_GetContent(uintptr_t inElementName, uint32_t inNameLength, uintptr_t outContentsDestination, uint32_t outContentsBytesCount);
+    void _TextArea_SetContent(uintptr_t inElementName, uint32_t inNameLength, uintptr_t inContents, uint32_t inContentsLength);
 }
 
-extern void TextArea_SetCharacter(const char* inElementName, uint32_t inNameLength, uint32_t inX, uint32_t inY, const char inC); // this is used internally.
-extern void TextArea_Init(const char* inElementName, uint32_t inNameLength, uint32_t inWidth, uint32_t inHeight);
+extern void TextArea_Init(const char* inElementName, uint32_t inNameLength, uint32_t inColumns, uint32_t inRows);
+extern void TextArea_GetContent(const char* inElementName, uint32_t inNameLength, char * outContentsDestination, uint32_t outContentsBytesCount);
+extern void TextArea_SetContent(const char* inElementName, uint32_t inNameLength, const char * inContents, uint32_t inContentsLength);
 
 #endif
