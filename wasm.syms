@@ -1,0 +1,7 @@
+_print
+_print_err
+
+_alert
+
+_TextArea_Init
+_TextArea_SetCharacter

@@ -1,0 +1,132 @@
+<html>
+    <head>
+        <title>Textarea Sketch</title>
+    </head>
+
+    <body>
+
+    <!-- Define your elements -->
+        <h1>Text Area Sketch</h1>
+        
+        <textarea id="displayTextArea"></textarea>
+
+
+
+
+
+
+
+
+
+
+    <!-- Javascript code (No need to look further...) -->        
+        <script type="text/javascript">
+
+            let imports = {};
+            let memory = null;
+            let exports = null;
+
+
+            /*
+            * Javascript Pico Lib
+            */
+            let utf8Decoder = new TextDecoder("utf-8");
+            function GetString(inStrPtr, inStrLength)
+            {
+                let arr = memory.subarray(inStrPtr, inStrPtr + inStrLength);
+
+                return utf8Decoder.decode(arr);
+            }
+
+
+
+            /*
+            * Console
+            */
+            imports['_print'] = function(inStrPtr, inStrLength)
+            {
+                let strContents = GetString(inStrPtr, inStrLength);
+
+                console.log(strContents);
+            };
+
+            imports['_print_err'] = function(inStrPtr, inStrLength)
+            {
+                let strContents = GetString(inStrPtr, inStrLength);
+
+                console.error(strContents);
+            };
+
+
+
+            /*
+            * Alert
+            */
+            imports['_alert'] = function(inStrPtr, inStrLength)
+            {
+                let strContents = GetString(inStrPtr, inStrLength);
+
+                alert(strContents);
+            }
+
+
+
+            /*
+            * Text Area
+            */
+            imports['_TextArea_Init'] = function(inStrPtr, inStrLen, inWidth, inHeight)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+
+                let textAreaElement = document.getElementById(elementId);
+
+                // resize the element.
+                textAreaElement.cols = inWidth;
+                textAreaElement.rows = inHeight;
+
+                // clear text area with empty.
+                let contents = "\0";
+                
+                contents = contents.repeat(inWidth* inHeight);
+
+                textAreaElement.value = contents;
+            };
+
+            imports['_TextArea_SetCharacter'] = function(inStrPtr, inStrLen, inX, inY, inChar)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+
+                let textAreaElement = document.getElementById(elementId);
+            };
+
+
+
+            /*
+            * Main entry point
+            */
+            window.onload = async function ()
+            {
+                let request = await fetch('binary.wasm');
+                let binary = await request.arrayBuffer();
+                
+                imports['memory'] = new WebAssembly['Memory']({
+                    'initial' : 2       // 1 page of memory
+                });
+
+                memory = new Uint8Array(imports['memory']['buffer']);
+
+
+                let program = await WebAssembly['instantiate'](
+                    binary,
+                    { "env": imports }
+                );
+
+                let instance = program['instance'];
+
+                exports = instance['exports'];
+
+                exports['setup']();
+            };
+        </script>
+    </body>
+</html>
