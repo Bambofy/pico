@@ -1,6 +1,7 @@
 #include "../../pico_inc/defines.h"
 #include "../../pico_inc/types.h"
 #include "../../pico_inc/console.h"
+#include "../../pico_inc/conversion.h"
 #include "../../pico_inc/alert.h"
 #include "../../pico_inc/textarea.h"
 #include "../../pico_inc/window.h"
@@ -27,7 +28,6 @@ void onkeyup(const char inKeyChar)
 {
 }
 
-void onwheel(int32_t inDeltaX, uint32_t inDeltaY)
+void onwheel(int32_t inDeltaX, int32_t inDeltaY)
 {
-    alert(inDeltaX, )
 }

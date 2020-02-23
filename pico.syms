@@ -1,6 +1,8 @@
 _print
 _print_err
 
+_To_Char_Array
+
 _alert
 
 _TextArea_Init

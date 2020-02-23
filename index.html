@@ -25,6 +25,7 @@
             let imports = {};
             let memory = null;
             let exports = null;
+            
 
 
             /*
@@ -37,9 +38,9 @@
             function GetString(inStrPtr, inStrLength)
             {
                 let arr = memory.subarray(inStrPtr, inStrPtr + inStrLength);
-
                 return utf8Decoder.decode(arr);
             }
+
             // Convert a javascript string into an uint8_t array.
             function ConvertStringToBytes(inJSString)
             {
@@ -48,7 +49,24 @@
 
 
 
+            /*
+            * Standard library functions
+            
+            imports['_to_char_array'] = function(inNumber, outDestinationStrPtr, outDestinationByteLength)
+            {
+                // 1. convert to uint to a string.
+                let numStr = inNumber.toString();
 
+                // 2. get the bytes of the string.
+                let numStrBytes = ConvertStringToBytes(numStr);
+
+                // 3. make sure we can fit this array into the destination location.
+                let numStrBytesTruncated = numStrBytes.subarray(0, outDestinationByteLength);
+
+                // 2. paste numStrBytes bytes to the destination at outDestination.
+                memory.set(numStrBytesTruncated, outDestinationStrPtr);
+            }
+*/
 
 
             /*
@@ -144,7 +162,6 @@
                 });
 
                 memory = new Uint8Array(imports['memory']['buffer']);
-
 
                 let program = await WebAssembly['instantiate'](
                     binary,
