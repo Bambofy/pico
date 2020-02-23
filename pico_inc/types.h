@@ -23,4 +23,8 @@ typedef unsigned int		    uint32_t;
 typedef int			        intptr_t;
 typedef unsigned int		uintptr_t;
 
+// FPU
+typedef float f32_t;
+typedef double f64_t;
+
 #endif //TYPES_H
