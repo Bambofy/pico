@@ -6,7 +6,7 @@ About
 ======
 Pico provides a simple and easy way to compile C++ code to a webassembly binary and bundles it with an index.html for simple viewing. It does not provide system libraries, not even dynamic memory allocation, in this reguard it is spartan. You must make your app within the limits of the environment!
 
-It's goal is to give C++/C programmers a library that isn't too complicated and that provides features that are wanted when C++ programming, for example:
+Its goal is to give C++/C programmers a library that isn't too complicated and that provides features that are wanted when C++ programming, for example:
 - A simple GUI function set that you can use to create games, like text based roguelikes.
 - A simple events function set that you can use to interact with the code.
 - A set of useful helper functions like "ToCharArray" that converts any value to a string,
