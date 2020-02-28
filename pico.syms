@@ -12,4 +12,4 @@ _TextArea_Init
 _TextArea_SetContent
 _TextArea_GetContent
 
-buttonclicked
+_buttonclicked

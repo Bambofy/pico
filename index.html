@@ -6,7 +6,7 @@
     <body>
 
     <!-- Define your elements -->
-        <h1>pico sketch</h1>
+        <h1 id="titleDiv">pico sketch</h1>
         
         <button id="mybutton">hi</button>
         <textarea id="displayTextArea"></textarea>
@@ -185,16 +185,16 @@
             imports['_Div_GetContent'] = function(inStrPtr, inStrLen, outContentsStrPtr, outContentsStrLength)
             {
                 let elementId = GetString(inStrPtr, inStrLen);
-                let textAreaElement = document.getElementById(elementId);
+                let divElement = document.getElementById(elementId);
 
                 // Content is now an array of bytes.
-                let content = textAreaElement.innerHTML;
+                let content = divElement.innerHTML;
                 let contentArray = ConvertStringToBytes(content);
 
-                // 1. copy outContentsStrLength of data from the content array
+                // Copy outContentsStrLength of data from the content array
                 let contentArraySpan = contentArray.subarray(0, outContentsStrLength); // subarray creates a REFERENCE.
 
-                // 2. paste contentArraySpan bytes to the destination at outContentsStrPtr.
+                // Paste contentArraySpan bytes to the destination at outContentsStrPtr.
                 memory.set(contentArraySpan, outContentsStrPtr);
             };
 
@@ -203,8 +203,8 @@
                 let elementId = GetString(inStrPtr, inStrLen);
                 let contents = GetString(inContentsStrPtr, inContentsStrLen);
 
-                let textAreaElement = document.getElementById(elementId);
-                textAreaElement.innerHTML = contents;
+                let divElement = document.getElementById(elementId);
+                divElement.innerHTML = contents;
             };
 
 
@@ -258,7 +258,6 @@
                         memoryAddress: currentMemoryAddress,
                         stringLength: buttonIdByteArrayLength
                     };
-                    console.log(buttonIdLookupTable);
 
                     // Add an event listener for this button.
                     button.addEventListener("click", (eventArg) =>

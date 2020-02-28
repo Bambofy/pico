@@ -5,7 +5,6 @@
 #include "../../pico_inc/alert.h"
 #include "../../pico_inc/textarea.h"
 #include "../../pico_inc/window.h"
-#include "../../pico_inc/div.h"
 
 /////////////////////////////////
 // Place your setup code here. //
@@ -20,11 +19,7 @@ void setup()
 ///////////////////////
 void buttonclicked(const char * inButtonIDString, uint32_t inButtonIDStringLength)
 {
-    char titleContent[32U];
-
-    Div_GetContent("titleDiv", 8U, titleContent, 32U);
-
-    Div_SetContent("titleDiv", 8U, "TEST", 4U);
+    print(inButtonIDString, inButtonIDStringLength);
 }
 
 ////////////////

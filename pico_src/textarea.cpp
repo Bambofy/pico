@@ -7,7 +7,7 @@ void TextArea_Init(const char * inElementId, uint32_t inNameLength, uint32_t inC
     _TextArea_Init(elementAddress, inNameLength, inColumns, inRows);
 }
 
-void TextArea_SetContent(const char* inElementName, uint32_t inNameLength, const char * inContents, uint32_t inContentsLength)
+void TextArea_SetContent(const char* inElementName, uint32_t inNameLength, char * inContents, uint32_t inContentsLength)
 {
     uintptr_t elementAddress = reinterpret_cast<uintptr_t>(inElementName);
     uintptr_t contentsAddress = reinterpret_cast<uintptr_t>(inContents);
