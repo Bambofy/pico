@@ -33,3 +33,4 @@
 *.bc
 *.bc
 *.wasm
+.DS_Store

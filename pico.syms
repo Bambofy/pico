@@ -5,6 +5,11 @@ _To_Char_Array
 
 _alert
 
+_Div_GetContent
+_Div_SetContent
+
 _TextArea_Init
 _TextArea_SetContent
 _TextArea_GetContent
+
+buttonclicked

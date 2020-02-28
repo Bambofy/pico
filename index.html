@@ -8,6 +8,7 @@
     <!-- Define your elements -->
         <h1>pico sketch</h1>
         
+        <button id="mybutton">hi</button>
         <textarea id="displayTextArea"></textarea>
 
 
@@ -50,9 +51,9 @@
 
 
             /*
-            * Standard library functions
-            
-            imports['_to_char_array'] = function(inNumber, outDestinationStrPtr, outDestinationByteLength)
+            * Conversions
+            */
+            imports['_To_Char_Array'] = function(inNumber, outDestinationStrPtr, outDestinationByteLength)
             {
                 // 1. convert to uint to a string.
                 let numStr = inNumber.toString();
@@ -65,8 +66,7 @@
 
                 // 2. paste numStrBytes bytes to the destination at outDestination.
                 memory.set(numStrBytesTruncated, outDestinationStrPtr);
-            }
-*/
+            };
 
 
             /*
@@ -99,7 +99,7 @@
                 let strContents = GetString(inStrPtr, inStrLength);
 
                 alert(strContents);
-            }
+            };
 
 
 
@@ -145,7 +145,67 @@
                 let textAreaElement = document.getElementById(elementId);
                 textAreaElement.value = contents;
             };
+            
+            /*
+            * Button
+            */
+            imports['_Button_GetContent'] = function(inStrPtr, inStrLen, outContentsStrPtr, outContentsStrLength)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+                let textAreaElement = document.getElementById(elementId);
 
+                // Content is now an array of bytes.
+                let content = textAreaElement.innerHTML;
+                let contentArray = ConvertStringToBytes(content);
+
+                // 1. copy outContentsStrLength of data from the content array
+                let contentArraySpan = contentArray.subarray(0, outContentsStrLength); // subarray creates a REFERENCE.
+
+                // 2. paste contentArraySpan bytes to the destination at outContentsStrPtr.
+                memory.set(contentArraySpan, outContentsStrPtr);
+            };
+
+            imports["_Button_SetContent"] = function(inStrPtr, inStrLen, inContentsStrPtr, inContentsStrLen)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+                let contents = GetString(inContentsStrPtr, inContentsStrLen);
+
+                let textAreaElement = document.getElementById(elementId);
+                textAreaElement.innerHTML = contents;
+            };
+            
+            imports["_Button_BindEventListeners"] = function()
+            {
+
+            };
+
+            /*
+            * Div
+            */
+            imports['_Div_GetContent'] = function(inStrPtr, inStrLen, outContentsStrPtr, outContentsStrLength)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+                let textAreaElement = document.getElementById(elementId);
+
+                // Content is now an array of bytes.
+                let content = textAreaElement.innerHTML;
+                let contentArray = ConvertStringToBytes(content);
+
+                // 1. copy outContentsStrLength of data from the content array
+                let contentArraySpan = contentArray.subarray(0, outContentsStrLength); // subarray creates a REFERENCE.
+
+                // 2. paste contentArraySpan bytes to the destination at outContentsStrPtr.
+                memory.set(contentArraySpan, outContentsStrPtr);
+            };
+
+            imports['_Div_SetContent'] = function(inStrPtr, inStrLen, inContentsStrPtr, inContentsStrLen)
+            {
+                let elementId = GetString(inStrPtr, inStrLen);
+                let contents = GetString(inContentsStrPtr, inContentsStrLen);
+
+                let textAreaElement = document.getElementById(elementId);
+                textAreaElement.innerHTML = contents;
+            };
 
 
 
@@ -154,7 +214,7 @@
             */
             window.onload = async function ()
             {
-                let request = await fetch('binary.wasm');
+                let request = await fetch('picobin.wasm');
                 let binary = await request.arrayBuffer();
                 
                 imports['memory'] = new WebAssembly['Memory']({
@@ -162,6 +222,66 @@
                 });
 
                 memory = new Uint8Array(imports['memory']['buffer']);
+
+                ///////////////////////
+                // 2. STATIC GLOBALS //
+                ///////////////////////
+
+                //
+                // 2.1 Create static globals which contain each button's name.
+                //
+
+                // Create a lookup table.
+                let buttonIdLookupTable = {};
+                
+                // Start at memory address 0.
+                let currentMemoryAddress = 0; 
+                
+                // For each button in the document.
+                let buttons = document.querySelectorAll("button");
+
+                buttons.forEach((button) =>
+                {
+                    // Get its ID.
+                    let buttonIdString = button.id;
+
+                    // Convert it to a byte array.
+                    let buttonIdByteArray = ConvertStringToBytes(buttonIdString);
+                    
+                    // Add it to memory.
+                    let buttonIdByteArrayLength = buttonIdByteArray.length;
+
+                    memory.set(buttonIdByteArray, currentMemoryAddress);
+
+                    // Add it to our lookup table.
+                    buttonIdLookupTable[buttonIdString] = {
+                        memoryAddress: currentMemoryAddress,
+                        stringLength: buttonIdByteArrayLength
+                    };
+                    console.log(buttonIdLookupTable);
+
+                    // Add an event listener for this button.
+                    button.addEventListener("click", (eventArg) =>
+                    {
+                        // Get the button id of this button.
+                        let buttonId = eventArg.srcElement.id;
+
+                        // Get the memory address of this button's ID.
+                        let buttonIdLookupObject = buttonIdLookupTable[buttonId];
+
+                        let buttonIdPtr = buttonIdLookupObject.memoryAddress;
+
+                        let buttonIdLength = buttonIdLookupObject.stringLength;
+
+                        // Invoke the C function with the lookup object parameters.
+                        exports['buttonclicked'](buttonIdPtr, buttonIdLength);
+                    });
+
+                    // Point to the next free memory space.
+                    currentMemoryAddress += buttonIdByteArrayLength;
+                });
+
+
 
                 let program = await WebAssembly['instantiate'](
                     binary,
@@ -172,6 +292,7 @@
 
                 exports = instance['exports'];
 
+                // Invoke the C++ setup function.
                 exports['setup']();
             };
 
@@ -182,17 +303,26 @@
            // Keys
             window.onkeypress = function(inEvent)
             {
-                exports["onkeypress"](inEvent.key.charCodeAt(0));
+                if (exports["onkeypress"] !== undefined)
+                {
+                    exports["onkeypress"](inEvent.key.charCodeAt(0));
+                }
             };
 
             window.onkeydown = function(inEvent)
             {
-                exports["onkeydown"](inEvent.key.charCodeAt(0));
+                if (exports["onkeyup"] !== undefined)
+                {
+                    exports["onkeydown"](inEvent.key.charCodeAt(0));
+                }
             };
 
             window.onkeyup = function(inEvent)
             {
-                exports["onkeyup"](inEvent.key.charCodeAt(0));
+                if (exports["onkeyup"] !== undefined)
+                {
+                    exports["onkeyup"](inEvent.key.charCodeAt(0));
+                }
             };
 
 
@@ -200,23 +330,36 @@
             // Mouse
             window.onclick = function(inEvent)
             {
-                exports["onclick"](inEvent.buttons);
+                if (exports["onclick"] !== undefined)
+                {
+                    exports["onclick"](inEvent.buttons);
+                }
             };
 
             window.onmousedown = function(inEvent)
             {
-                exports["onmousedown"](inEvent.buttons);
-            }
+                if (exports["onmousedown"] !== undefined)
+                {
+                    exports["onmousedown"](inEvent.buttons);
+                }
+            };
 
             window.onmouseup = function(inEvent)
             {
-                exports["onmouseup"](inEvent.buttons);
-            }
+                if (exports["onmouseup"] !== undefined)
+                {
+                    exports["onmouseup"](inEvent.buttons);
+                }
+            };
 
             window.onwheel = function(inEvent)
             {
-                exports["onwheel"](inEvent.deltaX, inEvent.deltaY);
-            }
+                if (exports["onwheel"] !== undefined)
+                {
+                    exports["onwheel"](inEvent.deltaX, inEvent.deltaY);
+                }
+            };
+
         </script>
     </body>
 </html>

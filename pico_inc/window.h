@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include "../pico_inc/defines.h"
+#include "../pico_inc/types.h"
 
 // this is the C/WASM entry point.
 extern "C" 
@@ -19,6 +20,9 @@ extern "C"
     export void onmousedown(const char inKeyChar);
     export void onmouseup(const char inKeyChar);
     export void onwheel(int32_t inDeltaX, int32_t inDeltaY);
+
+    export void _buttonclicked(uintptr_t inButtonIDStrPtr, uint32_t inButtonIDStrLength);
+    export void buttonclicked(const char * inButtonId, uint32_t inButtonIdLength);
 }
 
 #endif

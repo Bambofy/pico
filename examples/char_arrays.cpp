@@ -11,15 +11,20 @@
 /////////////////////////////////
 void setup()
 {
+    // memory dump
+    uint8_t a = 100;
 
-}
+    char temp[32];
+    for (int i = 0; i < 100; i++)
+    {
+    uint8_t * ip  = reinterpret_cast<uint8_t*>(i);
+    To_Char_Array(*ip, temp, 32);
+    print(temp, 32);
+    }
 
-///////////////////////
-// DOM button events //
-///////////////////////
-void buttonclicked(const char * inButtonIDString, uint32_t inButtonIDStringLength)
-{
-    print(inButtonIDString, inButtonIDStringLength);
+    To_Char_Array(a, temp, 32);
+    print(temp, 32);
+
 }
 
 ////////////////
