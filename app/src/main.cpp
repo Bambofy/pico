@@ -20,11 +20,6 @@ void setup()
 ///////////////////////
 void buttonclicked(const char * inButtonIDString, uint32_t inButtonIDStringLength)
 {
-    char textAreaContent[32U];
-
-    TextArea_GetContent("displayTextArea", 15U, textAreaContent, 32U);
-
-    Div_SetContent("titleDiv", 8U, textAreaContent, 32U);
 }
 
 ////////////////
