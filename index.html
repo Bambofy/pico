@@ -1,8 +1,8 @@
+<!DOCTYPE html>
 <html>
-
-
 <head>
     <title>Pico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         *
@@ -17,44 +17,33 @@
 
         #page
         {
-            width: 60em;
-            margin: auto;
-
             display: flex;
             flex-direction: column;
         }
 
         #pageContent
         {
+            margin: 0px;
             display: flex;
             flex-direction: row;
             justify-content: center;
-            margin: 16px;
         }
 
         #heading
         {
-            margin: 16px;
+            margin: 0px;
             display: flex;
         }
 
         #contentText
         {
-            width: 90%;
-            padding-left: 32px;
+            width: 100%;
+            font-size: 12px;
         }
 
         #contentSidebar
         {
-            border-style: solid;
-            border-right: solid;
-            border-top: none;
-            border-bottom: none;
-            border-left: none;
-
-            width: 10%;
-            padding-right: 32px;
-
+            min-width: 180px;
             font-size: 12px;
         }
 
@@ -73,20 +62,37 @@
         <div id="pageContent">
 
             <div id="contentSidebar">
-                <h3>Test</h3>
+                <h3>About</h3>
                 <ol>
-                    <li>Installing</li>
+                    <li>What is Pico?</li>
+                    <li>Who made Pico?</li>
+                    <li>How do I use Pico?</li>
+                </ol>
+                <h3>Examples</h3>
+                <ol>
+                    <li>Manipulating divs.</li>
+                </ol>
+                <h3>Installing</h3>
+                <ol>
+                    <li>OS X</li>
+                    <li>Windows</li>
                 </ol>
             </div>
 
             <div id="contentText">
+                <h2>What is Pico?</h2>
+                <p>Pico provides a straightforward way to compile a C++ project to a webassembly based webpage. It does not provide system libraries, not even dynamic memory allocation!</p>
+                <p>Pico uses the LLVM toolset to compile C and C++ code into a <a href="https://aransentin.github.io/cwasm/">webassembly binary</a>. Pico is essentially a set of C++ and C scripts that does the bindings between C and HTML for you, it is very lightweight and experimental, additionally it provides some simple .bat and .sh scripts that
+compile and link your program so you don't have to bother wrangling with cmake or another build system to create simple applications.</p>
+                <h2>Who made Pico?</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique, nisl sit amet efficitur blandit, nunc mi sollicitudin mi, vel condimentum enim diam ut lorem. Etiam blandit tellus in nisi vestibulum, vel aliquet velit luctus. Suspendisse dignissim imperdiet dui, id vehicula lacus dictum et. Nulla sed dolor eget dui imperdiet pellentesque. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tristique mi quis interdum viverra. Nullam convallis convallis sodales. Duis dignissim aliquet aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam pharetra augue et nisl consequat vehicula. Quisque tempor lacinia nibh, at euismod leo rhoncus blandit.
-
-                    Aliquam nec tincidunt quam, lacinia ullamcorper risus. Fusce facilisis facilisis cursus. Phasellus in hendrerit magna, non tristique arcu. Suspendisse euismod placerat mi, et malesuada velit. Sed facilisis ultrices congue. Donec facilisis porta ex, scelerisque semper erat ornare vel. Proin viverra ex a est pretium rutrum. Praesent ullamcorper eu dolor eu aliquet.
-                    
-                    Etiam eleifend ante nec orci tristique, vitae feugiat risus consequat. Mauris in cursus risus, non eleifend leo. Pellentesque orci velit, sollicitudin sed tellus at, euismod blandit enim. Morbi ut pharetra augue. Nulla ut tempor lectus. Duis ut nisl elit. Fusce eu cursus justo. Pellentesque interdum ligula diam, vitae viverra lorem mollis quis. Sed pellentesque fringilla felis sit amet sodales. Quisque tempus iaculis dolor eget imperdiet. Pellentesque pellentesque faucibus risus, ac sagittis ligula. Aenean accumsan imperdiet malesuada. 
+Pico is an experimental project made by <a href="https://richardbamford.dev">Richard</a>.
                 </p>
+                <h2>How do I use Pico?</h2>
+                <p>First, to set up the pico environment, it is recommended to use Visual Studio Code and open the .workspace file in the root of this repository. This method allows you to use intellisense to guide your code!</p>
+                <p>Then, to build your Pico app, run the build.sh or the build.bat scripts which automatically build your C++ program and link it with the Pico framework.</p>
+                <p>Once your program is built, to run your application, open the index.html with a web server and it should run and print errors to the console!</p>
+                <p>This might seem complicated at first, but once your Pico environment is set up, all that is required is a ./build.sh and a webpage refresh.</p>
             </div>
 
         </div>
