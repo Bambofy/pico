@@ -68,31 +68,29 @@
                     <li>Who made Pico?</li>
                     <li>How do I use Pico?</li>
                 </ol>
-                <h3>Examples</h3>
-                <ol>
-                    <li>Manipulating divs.</li>
-                </ol>
-                <h3>Installing</h3>
-                <ol>
-                    <li>OS X</li>
-                    <li>Windows</li>
-                </ol>
             </div>
 
             <div id="contentText">
+            
                 <h2>What is Pico?</h2>
                 <p>Pico provides a straightforward way to compile a C++ project to a webassembly based webpage. It does not provide system libraries, not even dynamic memory allocation!</p>
-                <p>Pico uses the LLVM toolset to compile C and C++ code into a <a href="https://aransentin.github.io/cwasm/">webassembly binary</a>. Pico is essentially a set of C++ and C scripts that does the bindings between C and HTML for you, it is very lightweight and experimental, additionally it provides some simple .bat and .sh scripts that
+                <p>Pico uses the LLVM toolset to compile C and C++ code into a webassembly binary. Pico is essentially a set of C++ and C scripts that does the bindings between C and HTML for you, it is very lightweight and experimental, additionally it provides some simple .bat and .sh scripts that
 compile and link your program so you don't have to bother wrangling with cmake or another build system to create simple applications.</p>
+                
                 <h2>Who made Pico?</h2>
-                <p>
-Pico is an experimental project made by <a href="https://richardbamford.dev">Richard</a>.
-                </p>
+                <p>Pico is an experimental project made by <a href="https://richardbamford.dev">Richard</a>.</p>
+                
                 <h2>How do I use Pico?</h2>
                 <p>First, to set up the pico environment, it is recommended to use Visual Studio Code and open the .workspace file in the root of this repository. This method allows you to use intellisense to guide your code!</p>
                 <p>Then, to build your Pico app, run the build.sh or the build.bat scripts which automatically build your C++ program and link it with the Pico framework.</p>
                 <p>Once your program is built, to run your application, open the index.html with a web server and it should run and print errors to the console!</p>
                 <p>This might seem complicated at first, but once your Pico environment is set up, all that is required is a ./build.sh and a webpage refresh.</p>
+                
+                <h2>Useful Links</h2>
+                <ol>
+                    <li><a href="https://aransentin.github.io/cwasm/">https://aransentin.github.io/cwasm/</a></li>
+                </ol>
+            
             </div>
 
         </div>
