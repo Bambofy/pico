@@ -1,6 +1,8 @@
 ## Pico
 Pico is a spartan framework that allows you to write websites in C++ and C.
 
+### [website](https://bambofy.github.io/pico/)
+
 ## About
 Pico provides a straightforward way to compile a C++ project to a webassembly based webpage. It does not provide system libraries, not even dynamic memory allocation!
 
