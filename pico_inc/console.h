@@ -18,6 +18,6 @@ extern "C" {
 }
 
 void print(const char * inMessage, uint32_t inLength);
-void _print_err(const char * inMessage, uint32_t inLength);
+void print_err(const char * inMessage, uint32_t inLength);
 
 #endif
