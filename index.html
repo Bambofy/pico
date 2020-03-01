@@ -49,7 +49,6 @@
             }
 
 
-
             /*
             * Conversions
             */
@@ -208,10 +207,10 @@
             };
 
 
-
             /*
             * Main entry point
             */
+            let mainLoop = undefined; // this is the setInterval object, stored here to pause when page is not in focus.
             window.onload = async function ()
             {
                 let request = await fetch('picobin.wasm');
@@ -265,7 +264,7 @@
                         // Get the button id of this button.
                         let buttonId = eventArg.srcElement.id;
 
-                        // Get the memory address of this button's ID.
+                        // Get the information about this button id name from the lookup table.
                         let buttonIdLookupObject = buttonIdLookupTable[buttonId];
 
                         let buttonIdPtr = buttonIdLookupObject.memoryAddress;
@@ -293,71 +292,106 @@
 
                 // Invoke the C++ setup function.
                 exports['setup']();
-            };
 
-
-            /*
-            * DOM Window events
-            */
-           // Keys
-            window.onkeypress = function(inEvent)
-            {
-                if (exports["onkeypress"] !== undefined)
+                // Start the update loop
+                mainLoop = setInterval(()=>
                 {
-                    exports["onkeypress"](inEvent.key.charCodeAt(0));
-                }
-            };
+                    if (exports['loop'] !== undefined)
+                    {
+                        exports["loop"](17);
+                    }
+                }, 17);
 
-            window.onkeydown = function(inEvent)
-            {
-                if (exports["onkeyup"] !== undefined)
+                
+
+                // Since the javascript events can be hooked before the
+                // webassembly object is ready, we define them here.
+                /*
+                * DOM Window events
+                */
+                // on window focus timer start/stopping
+                window.onfocus = function(inEvent)
                 {
-                    exports["onkeydown"](inEvent.key.charCodeAt(0));
-                }
-            };
+                    if (mainLoop === null)
+                    {
+                        // Re-start the update loop
+                        mainLoop = setInterval(()=>
+                        {
+                            if (exports['loop'] !== undefined)
+                            {
+                                exports["loop"](17);
+                            }
+                        }, 17);
+                    }
+                };
 
-            window.onkeyup = function(inEvent)
-            {
-                if (exports["onkeyup"] !== undefined)
+                window.onblur = function(inEvent)
                 {
-                    exports["onkeyup"](inEvent.key.charCodeAt(0));
-                }
-            };
+                    clearInterval(mainLoop);
+                    mainLoop = null;
+                };
 
-
-
-            // Mouse
-            window.onclick = function(inEvent)
-            {
-                if (exports["onclick"] !== undefined)
+                // Keys
+                window.onkeypress = function(inEvent)
                 {
-                    exports["onclick"](inEvent.buttons);
-                }
+                    if (exports["onkeypress"] !== undefined)
+                    {
+                        exports["onkeypress"](inEvent.key.charCodeAt(0));
+                    }
+                };
+
+                window.onkeydown = function(inEvent)
+                {
+                    if (exports["onkeyup"] !== undefined)
+                    {
+                        exports["onkeydown"](inEvent.key.charCodeAt(0));
+                    }
+                };
+
+                window.onkeyup = function(inEvent)
+                {
+                    if (exports["onkeyup"] !== undefined)
+                    {
+                        exports["onkeyup"](inEvent.key.charCodeAt(0));
+                    }
+                };
+
+
+
+                // Mouse
+                window.onclick = function(inEvent)
+                {
+                    if (exports["onclick"] !== undefined)
+                    {
+                        exports["onclick"](inEvent.buttons);
+                    }
+                };
+
+                window.onmousedown = function(inEvent)
+                {
+                    if (exports["onmousedown"] !== undefined)
+                    {
+                        exports["onmousedown"](inEvent.buttons);
+                    }
+                };
+
+                window.onmouseup = function(inEvent)
+                {
+                    if (exports["onmouseup"] !== undefined)
+                    {
+                        exports["onmouseup"](inEvent.buttons);
+                    }
+                };
+
+                window.onwheel = function(inEvent)
+                {
+                    if (exports["onwheel"] !== undefined)
+                    {
+                        exports["onwheel"](inEvent.deltaX, inEvent.deltaY);
+                    }
+                };
             };
 
-            window.onmousedown = function(inEvent)
-            {
-                if (exports["onmousedown"] !== undefined)
-                {
-                    exports["onmousedown"](inEvent.buttons);
-                }
-            };
-
-            window.onmouseup = function(inEvent)
-            {
-                if (exports["onmouseup"] !== undefined)
-                {
-                    exports["onmouseup"](inEvent.buttons);
-                }
-            };
-
-            window.onwheel = function(inEvent)
-            {
-                if (exports["onwheel"] !== undefined)
-                {
-                    exports["onwheel"](inEvent.deltaX, inEvent.deltaY);
-                }
-            };
 
         </script>
     </body>
