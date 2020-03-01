@@ -13,3 +13,21 @@ _TextArea_SetContent
 _TextArea_GetContent
 
 _buttonclicked
+
+_Canvas_Init
+
+_Canvas_FillStyle
+_Canvas_FillRect
+_Canvas_MoveTo
+_Canvas_LineTo
+_Canvas_Stroke
+
+_Canvas_Arc
+
+_Canvas_Font
+
+_Canvas_FillText
+_Canvas_StrokeText
+_Canvas_TextAlign
+
+_Canvas_DrawImage

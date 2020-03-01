@@ -11,6 +11,7 @@
         <button id="mybutton">hi</button>
         <textarea id="displayTextArea"></textarea>
 
+        <canvas id="mycanvas"></canvas>
 
 
 
@@ -104,7 +105,114 @@
 
 
 
+            /*
+            * Canvas
+            */
+            imports['_Canvas_Init'] = function(inElementIdStrPtr, inElementIdStrLen)
+            {
+                // get the canvas element.
+                let elementId = GetString(inStrPtr, inStrLen);
+                canvas = document.getElementById(elementId);
 
+                // get the graphics context.
+                canvasContext = canvas.getContext("2d");
+            };
+
+            /*
+            * Canvas - Colours, Styles, Shadows
+            */
+            imports['_Canvas_FillStyle'] = function(inColourStrPtr, inColourStrLen)
+            {
+                let colourString = GetString(inColourStrPtr, inColourStrLen);
+                canvasContext.fillStyle = colourString;
+            };
+
+            /*
+            * Canvas - Rectangles
+            */
+            imports['_Canvas_FillRect'] = function(inXPosition, inYPosition, inPixelWidth, inPixelHeight)
+            {
+                canvasContext.fillRect(inXPosition, inYPosition, inPixelWidth, inPixelHeight);
+            }
+
+            /*
+            * Canvas - Paths
+            */
+            imports['_Canvas_MoveTo'] = function(inXPosition, inYPosition)
+            {
+                canvasContext.moveTo(inXPosition, inYPosition);
+            }
+
+            imports['_Canvas_LineTo'] = function(inXPosition, inYPosition)
+            {
+                canvasContext.lineTo(inXPosition, inYPosition);
+            }
+
+            imports['_Canvas_Stroke'] = function()
+            {
+                canvasContext.stroke();
+            }
+
+            imports['_Canvas_Arc'] = function(inXPosition, inYPosition, inRadius, inStartAngleRads, inEndAngleRads)
+            {
+                canvasContext.arc(inXPosition, inYPosition, inRadius, inStartAngleRads, inEndAngleRads);
+            }
+
+            /*
+            *   Canvas - Text
+            */
+            imports['_Canvas_Font'] = function(inFontStrPtr, inFontStrLen)
+            {
+                let fontStr = GetString(inFontStrPtr, inFontStrLen);
+
+                canvasContext.font = fontstr;
+            };
+
+            imports['_Canvas_FillText'] = function(inTextStrPtr, inTextStrLen, inXPosition, inYPosition)
+            {
+                let textStr = GetString(inTextStrPtr, inTextStrLen);
+
+                canvasContext.fillText(textStr, inXPosition, inYPosition);
+            };
+
+            imports['_Canvas_StrokeText'] = function(inTextStrPtr, inTextStrLen, inXPosition, inYPosition)
+            {
+                let textStr = GetString(inTextStrPtr, inTextStrLen);
+
+                canvasContext.strokeText(textStr, inXPosition, inYPosition);
+            };
+
+            imports['_Canvas_TextAlign'] = function(inAlignStrPtr, inAlignStrLen)
+            {
+                let textStr = GetString(inTextStrPtr, inTextStrLen);
+
+                canvasContext.textAlign = textStr;
+            };
+
+            /*
+            * Canvas - Images
+            */
+            let imageCache = {};
+            imports['_Canvas_DrawImage'] = function(inImgPathStrPtr, inImgPathStrLen, inXPosition, inYPosition, inWidth, inHeight)
+            {
+                let imgPathStr = GetString(inImgPathStrPtr, inImgPathStrLen);
+
+                let imageData = undefined;
+
+                // cache loaded image data.
+                if (imageCache[imgPathStr] !== null)
+                {
+                    imageData = imageCache[imgPathStr];
+                }
+                else
+                {
+                    let request = await fetch(imgPathStr);
+                    
+                    console.log(request);
+                }
+
+                canvasContext.drawImage()
+            }
 
             /*
             * Text Area
@@ -172,11 +280,6 @@
                 let textAreaElement = document.getElementById(elementId);
                 textAreaElement.innerHTML = contents;
             };
-            
-            imports["_Button_BindEventListeners"] = function()
-            {
-
-            };
 
             /*
             * Div
@@ -210,6 +313,8 @@
             /*
             * Main entry point
             */
+            let canvas = undefined; // defined in _Canvas_Init()
+            let canvasContext = undefined; // defined in _Canvas_Init()
             let mainLoop = undefined; // this is the setInterval object, stored here to pause when page is not in focus.
             window.onload = async function ()
             {
@@ -302,7 +407,7 @@
                     }
                 }, 17);
 
-                
+
 
                 // Since the javascript events can be hooked before the
                 // webassembly object is ready, we define them here.
