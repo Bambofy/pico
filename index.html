@@ -111,7 +111,7 @@
             imports['_Canvas_Init'] = function(inElementIdStrPtr, inElementIdStrLen)
             {
                 // get the canvas element.
-                let elementId = GetString(inStrPtr, inStrLen);
+                let elementId = GetString(inElementIdStrPtr, inElementIdStrLen);
                 canvas = document.getElementById(elementId);
 
                 // get the graphics context.
@@ -193,26 +193,45 @@
             * Canvas - Images
             */
             let imageCache = {};
-            imports['_Canvas_DrawImage'] = function(inImgPathStrPtr, inImgPathStrLen, inXPosition, inYPosition, inWidth, inHeight)
+
+            imports['_Canvas_LoadImage'] = async function(inImgPathStrPtr, inImgPathStrLen)
             {
                 let imgPathStr = GetString(inImgPathStrPtr, inImgPathStrLen);
 
                 let imageData = undefined;
+ 
+                let request = await fetch(imgPathStr);
+                
+                console.log(request);
+            };
+
+            imports['_Canvas_UnloadImage'] = async function(inImgPathStrPtr, inImgPathStrLen)
+            {
+                let imgPathStr = GetString(inImgPathStrPtr, inImgPathStrLen);
+
+                // uncache image data.
+                if (imageCache[imgPathStr] !== null)
+                {
+                    imageCache[imgPathStr] = null;
+                }
+            };
+
+            imports['_Canvas_DrawImage'] = async function(inImgPathStrPtr, inImgPathStrLen, inXPosition, inYPosition, inWidth, inHeight)
+            {
+                let imgPathStr = GetString(inImgPathStrPtr, inImgPathStrLen);
 
                 // cache loaded image data.
                 if (imageCache[imgPathStr] !== null)
                 {
-                    imageData = imageCache[imgPathStr];
+                    let imageData = imageCache[imgPathStr];
+
+                    canvasContext.drawImage(imageData, inXPosition, inYPosition, inWidth, inHeight);
                 }
                 else
                 {
-                    let request = await fetch(imgPathStr);
-                    
-                    console.log(request);
+                    console.err("Image not loaded!", imgPathStr);
                 }
-
-                canvasContext.drawImage()
-            }
+            };
 
             /*
             * Text Area

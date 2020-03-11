@@ -21,6 +21,8 @@ extern "C"
     void _Canvas_StrokeText(uintptr_t inTextStrPtr, uint32_t inTextStrLen,  uint32_t inXPosition, uint32_t inYPosition);
     void _Canvas_TextAlign(uintptr_t inAlignStrPtr, uint32_t inAlignStrLen);
 
+    void _Canvas_LoadImage(uintptr_t inImgPathStrPtr, uint32_t inImagePathStrLen);
+    void _Canvas_UnloadImage(uintptr_t inImagePathStrPtr, uint32_t inImagePathStrLen);
     void _Canvas_DrawImage(uintptr_t inImgPathStrPtr, uint32_t inImgPathStrLen, uint32_t inXPosition, uint32_t inYPosition, uint32_t inWidth, uint32_t inHeight);
 }
 
@@ -41,6 +43,8 @@ void Canvas_FillText(const char * inTextStr, uint32_t inTextStrLen,  uint32_t in
 void Canvas_StrokeText(const char * inTextStr, uint32_t inTextStrLen,  uint32_t inXPosition, uint32_t inYPosition);
 void Canvas_TextAlign(const char * inAlignStr, uint32_t inAlignStrLen);
 
+void Canvas_LoadImage(const char * inImagePathStr, uint32_t inImagePathStrLen);
+void Canvas_UnloadImage(const char * inImagePathStr, uint32_t inImagePathStrLen);
 void Canvas_DrawImage(const char * inImgPathStr, uint32_t inImgPathStrLen, uint32_t inXPosition, uint32_t inYPosition, uint32_t inWidth, uint32_t inHeight);
 
 

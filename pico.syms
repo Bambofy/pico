@@ -30,4 +30,6 @@ _Canvas_FillText
 _Canvas_StrokeText
 _Canvas_TextAlign
 
+_Canvas_LoadImage
+_Canvas_UnloadImage
 _Canvas_DrawImage

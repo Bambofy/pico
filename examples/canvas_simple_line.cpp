@@ -15,7 +15,9 @@ void setup()
 {
     Canvas_Init("mycanvas", 8U);
 
-    Canvas_LoadImage("test.png", 8U);
+    Canvas_MoveTo(0, 0);
+    Canvas_LineTo(10, 10);
+    Canvas_Stroke();
 }
 
 ///////////////////////////////////

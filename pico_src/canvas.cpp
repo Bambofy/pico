@@ -72,6 +72,21 @@ void Canvas_TextAlign(const char * inAlignStr, uint32_t inAlignStrLen)
 }
 
 
+
+void Canvas_LoadImage(const char * inImagePathStr, uint32_t inImagePathStrLen)
+{
+    uintptr_t imgPathPtr = reinterpret_cast<uintptr_t>(inImagePathStr);
+
+    _Canvas_LoadImage(imgPathPtr, inImagePathStrLen);
+}
+
+void Canvas_UnloadImage(const char * inImagePathStr, uint32_t inImagePathStrLen)
+{
+    uintptr_t imgPathPtr = reinterpret_cast<uintptr_t>(inImagePathStr);
+
+    _Canvas_UnloadImage(imgPathPtr, inImagePathStrLen);
+}
+
 void Canvas_DrawImage(const char * inImgPathStr, uint32_t inImgPathStrLen, uint32_t inXPosition, uint32_t inYPosition, uint32_t inWidth, uint32_t inHeight)
 {
     uintptr_t imgPathPtr = reinterpret_cast<uintptr_t>(inImgPathStr);
