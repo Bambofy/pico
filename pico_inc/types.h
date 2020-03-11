@@ -10,9 +10,9 @@
 #define TYPES_H
 
 // Signed
-typedef signed char		    int8_t;
-typedef int			        int16_t;
-typedef int			        int32_t;
+typedef signed char		        int8_t;
+typedef signed int			    int16_t;
+typedef signed int	            int32_t;
 
 // Unsigned
 typedef unsigned char		    uint8_t;
