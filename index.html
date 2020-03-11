@@ -198,11 +198,26 @@
             {
                 let imgPathStr = GetString(inImgPathStrPtr, inImgPathStrLen);
 
-                let imageData = undefined;
- 
-                let request = await fetch(imgPathStr);
-                
-                console.log(request);
+                let request = await fetch(imgPathStr).then(response => {
+                    if (response.status === 404)
+                    {
+                        console.err("Image not found.", imgPathStr);
+                    }
+
+                    return response.blob();
+                }
+                ).then(data =>
+                {
+                    let img = new Image();
+                    img.onload = function()
+                    {
+                        createImageBitmap(img).then((data) => {
+                            imageCache[imgPathStr] = data;
+                        });
+                    }
+                    img.src = URL.createObjectURL(data);
+
+                });
             };
 
             imports['_Canvas_UnloadImage'] = async function(inImgPathStrPtr, inImgPathStrLen)
