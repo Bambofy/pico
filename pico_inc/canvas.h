@@ -24,4 +24,24 @@ extern "C"
     void _Canvas_DrawImage(uintptr_t inImgPathStrPtr, uint32_t inImgPathStrLen, uint32_t inXPosition, uint32_t inYPosition, uint32_t inWidth, uint32_t inHeight);
 }
 
+
+void Canvas_Init(const char * inElementIdStr, uint32_t inElementIdStrLen);
+
+void Canvas_FillStyle(const char * inColourStr, uint32_t inColourStrLen);
+void Canvas_FillRect(uint32_t inXPosition, uint32_t inYPosition, uint32_t inPixelWidth, uint32_t inPixelHeight);
+void Canvas_MoveTo(uint32_t inXPosition, uint32_t inYPosition);
+void Canvas_LineTo(uint32_t inXPosition, uint32_t inYPosition);
+void Canvas_Stroke();
+
+void Canvas_Arc(uint32_t inXPosition, uint32_t inYPosition, f32_t inRadius, f32_t inStartAngleRads, f32_t inEndAngleRads);
+
+void Canvas_Font(const char * inFontStr, uint32_t inFontStrLen);
+
+void Canvas_FillText(const char * inTextStr, uint32_t inTextStrLen,  uint32_t inXPosition, uint32_t inYPosition);
+void Canvas_StrokeText(const char * inTextStr, uint32_t inTextStrLen,  uint32_t inXPosition, uint32_t inYPosition);
+void Canvas_TextAlign(const char * inAlignStr, uint32_t inAlignStrLen);
+
+void Canvas_DrawImage(const char * inImgPathStr, uint32_t inImgPathStrLen, uint32_t inXPosition, uint32_t inYPosition, uint32_t inWidth, uint32_t inHeight);
+
+
 #endif

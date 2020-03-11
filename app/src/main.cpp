@@ -6,13 +6,14 @@
 #include "../../pico_inc/textarea.h"
 #include "../../pico_inc/window.h"
 #include "../../pico_inc/div.h"
+#include "../../pico_inc/canvas.h"
 
 /////////////////////////////////
 // Place your setup code here. //
 /////////////////////////////////
 void setup()
 {
-
+    
 }
 
 ///////////////////////////////////
