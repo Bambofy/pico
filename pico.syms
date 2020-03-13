@@ -1,7 +1,9 @@
 _print
 _print_err
 
-_To_Char_Array
+_Conversion_Uint_To_Char_Array
+_Conversion_Int_To_Char_Array
+_Conversion_String_To_Int32
 
 _alert
 
@@ -33,3 +35,13 @@ _Canvas_TextAlign
 _Canvas_LoadImage
 _Canvas_UnloadImage
 _Canvas_DrawImage
+
+_LocalStorage_SetItem
+_LocalStorage_GetItem
+_LocalStorage_RemoveItem
+_LocalStorage_Clear
+
+_SessionStorage_SetItem
+_SessionStorage_GetItem
+_SessionStorage_RemoveItem
+_SessionStorage_Clear

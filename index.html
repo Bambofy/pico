@@ -7,11 +7,12 @@
 
     <!-- Define your elements -->
         <h1 id="titleDiv">pico sketch</h1>
-        
+        <br/>
+        <canvas width="100px" height="100px" id="mycanvas"></canvas>
+        <br/>
         <button id="mybutton">hi</button>
+        <br/>
         <textarea id="displayTextArea"></textarea>
-
-        <canvas id="mycanvas"></canvas>
 
 
 
@@ -53,7 +54,7 @@
             /*
             * Conversions
             */
-            imports['_To_Char_Array'] = function(inNumber, outDestinationStrPtr, outDestinationByteLength)
+            imports['_Conversion_Uint_To_Char_Array'] = function(inNumber, outDestinationStrPtr, outDestinationByteLength)
             {
                 // 1. convert to uint to a string.
                 let numStr = inNumber.toString();
@@ -68,6 +69,30 @@
                 memory.set(numStrBytesTruncated, outDestinationStrPtr);
             };
 
+            imports['_Conversion_Int_To_Char_Array'] = function(inNumber, outDestinationStrPtr, outDestinationByteLength)
+            {
+                // 1. convert to uint to a string.
+                let numStr = inNumber.toString();
+
+                // 2. get the bytes of the string.
+                let numStrBytes = ConvertStringToBytes(numStr);
+
+                // 3. make sure we can fit this array into the destination location.
+                let numStrBytesTruncated = numStrBytes.subarray(0, outDestinationByteLength);
+
+                // 2. paste numStrBytes bytes to the destination at outDestination.
+                memory.set(numStrBytesTruncated, outDestinationStrPtr);
+            };
+
+            imports['_Conversion_String_To_Int32'] = function(inCharArrayPtr, inCharArrayLength)
+            {
+                let numberString = GetString(inCharArrayPtr, inCharArrayLength);
+
+                // 1. convert to string to a int.
+                let num = parseInt(numberString);
+
+                return num;
+            };
 
             /*
             * Console
@@ -102,8 +127,77 @@
             };
 
 
+            /*
+            * Local Storage
+            */
+            imports['_LocalStorage_SetItem'] = function (inKeyPtr, inKeyLength, inValuePtr, inValueLength)
+            {
+                let key = GetString(inKeyPtr, inKeyLength);
+                let value = GetString(inValuePtr, inValueLength);
 
+                localStorage.setItem(key, value);
+            };
 
+            imports['_LocalStorage_GetItem'] = function (inKeyPtr, inKeyLength, outValuePtr, outValueLength)
+            {
+                let key = GetString(inKeyPtr, inKeyLength);
+
+                let value = localStorage.getItem(key);
+    
+                // 1. get the value as a array of bytes.
+                let valueByteArray = ConvertStringToBytes(value);
+
+                // 2. paste the value to the specified location.
+                memory.set(valueByteArray, outValuePtr); // note: here it is the responsibility of the C++ code to allocate outValueLength of data.
+            };
+            
+            imports['_LocalStorage_RemoveItem'] = function (inKeyPtr, inKeyLength)
+            {
+                let key = GetString(inKeyPtr, inKeyLength);
+
+                localStorage.removeItem(key)
+            };
+
+            imports['_LocalStorage_Clear'] = function ()
+            {
+                localStorage.clear();
+            };
+
+            /*
+            * Session Storage (the same as local storage.)
+            */
+            imports['_SessionStorage_SetItem'] = function (inKeyPtr, inKeyLength, inValuePtr, inValueLength)
+            {
+                let key = GetString(inKeyPtr, inKeyLength);
+                let value = GetString(inValuePtr, inValueLength);
+
+                localStorage.setItem(key, value);
+            };
+
+            imports['_SessionStorage_GetItem'] = function (inKeyPtr, inKeyLength, outValuePtr, outValueLength)
+            {
+                let key = GetString(inKeyPtr, inKeyLength);
+
+                let value = sessionStorage.getItem(key);
+    
+                // 1. get the value as a array of bytes.
+                let valueByteArray = ConvertStringToBytes(value);
+
+                // 2. paste the value to the specified location.
+                memory.set(valueByteArray, outValuePtr); // note: here it is the responsibility of the C++ code to allocate outValueLength of data.
+            };
+            
+            imports['_SessionStorage_RemoveItem'] = function (inKeyPtr, inKeyLength)
+            {
+                let key = GetString(inKeyPtr, inKeyLength);
+
+                sessionStorage.removeItem(key)
+            };
+
+            imports['_SessionStorage_Clear'] = function ()
+            {
+                sessionStorage.clear();
+            };
 
             /*
             * Canvas

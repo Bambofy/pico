@@ -9,6 +9,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#define NULL 0U
+
 // Signed
 typedef signed char		        int8_t;
 typedef signed int			    int16_t;
